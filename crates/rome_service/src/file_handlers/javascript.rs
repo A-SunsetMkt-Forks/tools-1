@@ -143,7 +143,7 @@ fn debug_control_flow(rome_path: &RomePath, parse: AnyParse, cursor: TextSize) -
 
     let filter = AnalysisFilter {
         categories: RuleCategories::LINT,
-        enabled_rules: Some(&[RuleFilter::Rule("js", "noDeadCode")]),
+        enabled_rules: Some(&[RuleFilter::Rule("nursery", "noUnreachable")]),
         ..AnalysisFilter::default()
     };
     let options = AnalyzerOptions::default();
@@ -153,22 +153,23 @@ fn debug_control_flow(rome_path: &RomePath, parse: AnyParse, cursor: TextSize) -
         &parse.tree(),
         filter,
         |match_params| {
-            let (cfg, range) = match &match_params.query {
-                QueryMatch::ControlFlowGraph(cfg, node) => (cfg, node),
+            let cfg = match &match_params.query {
+                QueryMatch::ControlFlowGraph(cfg) => cfg,
                 _ => return,
             };
 
+            let range = cfg.node.text_trimmed_range();
             if !range.contains(cursor) {
                 return;
             }
 
             match &control_flow_graph {
                 None => {
-                    control_flow_graph = Some((cfg.to_string(), *range));
+                    control_flow_graph = Some((cfg.to_string(), range));
                 }
                 Some((_, prev_range)) => {
                     if range.len() < prev_range.len() {
-                        control_flow_graph = Some((cfg.to_string(), *range));
+                        control_flow_graph = Some((cfg.to_string(), range));
                     }
                 }
             }

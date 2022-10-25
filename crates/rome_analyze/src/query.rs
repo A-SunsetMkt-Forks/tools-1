@@ -31,14 +31,15 @@ pub trait Queryable: Sized {
 pub enum QueryMatch<L: Language> {
     Syntax(SyntaxNode<L>),
     SemanticModel(TextRange),
-    ControlFlowGraph(ControlFlowGraph<L>, TextRange),
+    ControlFlowGraph(ControlFlowGraph<L>),
 }
 
 impl<L: Language> QueryMatch<L> {
     pub fn text_range(&self) -> TextRange {
         match self {
             QueryMatch::Syntax(node) => node.text_trimmed_range(),
-            QueryMatch::SemanticModel(range) | QueryMatch::ControlFlowGraph(_, range) => *range,
+            QueryMatch::SemanticModel(range) => *range,
+            QueryMatch::ControlFlowGraph(graph) => graph.node.text_trimmed_range(),
         }
     }
 }
@@ -84,7 +85,7 @@ impl<L: Language> Queryable for ControlFlowGraph<L> {
 
     fn unwrap_match(_: &ServiceBag, query: &QueryMatch<Self::Language>) -> Self::Output {
         match query {
-            QueryMatch::ControlFlowGraph(cfg, _) => cfg.clone(),
+            QueryMatch::ControlFlowGraph(cfg) => cfg.clone(),
             _ => panic!("tried to unwrap unsupported QueryMatch kind, expected Syntax"),
         }
     }
