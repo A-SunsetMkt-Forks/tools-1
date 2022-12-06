@@ -72,6 +72,7 @@ define_dategories! {
     "lint/nursery/useExhaustiveDependencies": "https://docs.rome.tools/lint/rules/useExhaustiveDependencies",
     "lint/nursery/useExponentiationOperator": "https://docs.rome.tools/lint/rules/useExponentiationOperator",
     "lint/nursery/useNumericLiterals": "https://docs.rome.tools/lint/rules/useNumericLiterals",
+    "lint/nursery/noNoninteractiveElementToInteractiveRole": "https://docs.rome.tools/lint/rules/noNoninteractiveElementToInteractiveRole",
     "lint/nursery/useValidForDirection": "https://docs.rome.tools/lint/rules/useValidForDirection",
 
     // performance

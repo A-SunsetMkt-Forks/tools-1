@@ -226,17 +226,13 @@ mod tests {
             String::from_utf8(buffer).unwrap()
         }
 
-        const SOURCE: &str = r#"something.forEach((Element, index) => {
-    return <List
-        ><div key={index}>foo</div>
-    </List>;
-})"#;
+        const SOURCE: &str = r#"<span role="button"></h1>"#;
 
         let parsed = parse(SOURCE, FileId::zero(), SourceType::jsx());
 
         let mut error_ranges: Vec<TextRange> = Vec::new();
         let options = AnalyzerOptions::default();
-        let rule_filter = RuleFilter::Rule("suspicious", "noArrayIndexKey");
+        let rule_filter = RuleFilter::Rule("nursery", "noNoninteractiveElementToInteractiveRole");
         analyze(
             FileId::zero(),
             &parsed.tree(),

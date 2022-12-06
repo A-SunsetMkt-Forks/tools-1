@@ -709,6 +709,16 @@
             }
           ]
         },
+        "noNoninteractiveElementToInteractiveRole": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/RuleConfiguration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "noPrecisionLoss": {
           "description": "Disallow literal numbers that lose precision",
           "anyOf": [
